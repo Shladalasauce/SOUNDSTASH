@@ -1,70 +1,15 @@
-import { SymbolView } from 'expo-symbols';
-import { Link, Tabs } from 'expo-router';
-import { Platform, Pressable } from 'react-native';
+import { Tabs } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { MiniPlayer } from '@/components/MiniPlayer';
+import { colors } from '@/constants/theme';
 
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-
+const icons: Record<string, keyof typeof Ionicons.glyphMap> = { index: 'home', library: 'albums', playlists: 'list', downloads: 'arrow-down-circle', settings: 'settings' };
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => (
-            <SymbolView
-              name={{
-                ios: 'chevron.left.forwardslash.chevron.right',
-                android: 'code',
-                web: 'code',
-              }}
-              tintColor={color}
-              size={28}
-            />
-          ),
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable style={{ marginRight: 15 }}>
-                {({ pressed }) => (
-                  <SymbolView
-                    name={{ ios: 'info.circle', android: 'info', web: 'info' }}
-                    size={25}
-                    tintColor={Colors[colorScheme].text}
-                    style={{ opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => (
-            <SymbolView
-              name={{
-                ios: 'chevron.left.forwardslash.chevron.right',
-                android: 'code',
-                web: 'code',
-              }}
-              tintColor={color}
-              size={28}
-            />
-          ),
-        }}
-      />
-    </Tabs>
-  );
+  return <><Tabs screenOptions={({ route }) => ({ headerShown: false, tabBarActiveTintColor: colors.accent, tabBarInactiveTintColor: colors.muted,
+    tabBarStyle: { backgroundColor: '#0D0F12', borderTopColor: colors.border, height: 80, paddingTop: 7 },
+    tabBarIcon: ({ color, size }) => <Ionicons name={icons[route.name] || 'ellipse'} size={size} color={color}/> })}>
+    <Tabs.Screen name="index" options={{ title: 'Home' }}/><Tabs.Screen name="library" options={{ title: 'Library' }}/>
+    <Tabs.Screen name="playlists" options={{ title: 'Playlists' }}/><Tabs.Screen name="downloads" options={{ title: 'Downloads' }}/>
+    <Tabs.Screen name="settings" options={{ title: 'Settings' }}/>
+  </Tabs><MiniPlayer/></>;
 }

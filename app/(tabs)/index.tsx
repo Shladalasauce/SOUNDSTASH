@@ -1,31 +1,9 @@
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
-
-export default function TabOneScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { colors } from '@/constants/theme'; import { TrackRow } from '@/components/TrackRow'; import { playQueue } from '@/services/audio/player'; import { useSoundStash } from '@/store/useSoundStash';
+export default function Home() { const tracks=useSoundStash(s=>s.tracks);const setCurrent=useSoundStash(s=>s.setCurrent);const setQueue=useSoundStash(s=>s.setQueue);const play=async(id:string)=>{setCurrent(id);setQueue(tracks.map(t=>t.id));await playQueue(tracks,id)};
+return <ScrollView contentContainerStyle={styles.page}><View style={styles.header}><View><Text style={styles.kicker}>YOUR AUDIO, YOUR WAY</Text><Text style={styles.h1}>SoundStash</Text></View><Pressable onPress={()=>router.push('/add')} style={styles.add}><Ionicons name="add" size={27}/></Pressable></View>
+<Pressable style={styles.hero} onPress={()=>play(tracks[0].id)}><Image source={{uri:tracks[0].thumbnailUrl}} style={StyleSheet.absoluteFill}/><View style={styles.overlay}/><Text style={styles.heroSmall}>READY WHEN YOU ARE</Text><Text style={styles.heroTitle}>All your saved sounds.{`\n`}One endless queue.</Text><View style={styles.shuffle}><Ionicons name="shuffle" size={18}/><Text style={{fontWeight:'900'}}>SHUFFLE ALL</Text></View></Pressable>
+<Text style={styles.section}>Recently added</Text>{tracks.slice(0,4).map(t=><TrackRow key={t.id} track={t} onPress={()=>play(t.id)}/>)}<Text style={styles.section}>Your playlists</Text><View style={styles.cards}>{['Late Night Finds','Editing Ideas'].map((name,i)=><View key={name} style={styles.card}><Image source={{uri:tracks[i+1].thumbnailUrl}} style={styles.cardArt}/><Text style={styles.cardTitle}>{name}</Text><Text style={styles.cardMeta}>{i?'0':'2'} sounds</Text></View>)}</View></ScrollView> }
+const styles=StyleSheet.create({page:{padding:20,paddingTop:64,paddingBottom:160,backgroundColor:colors.background},header:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:24},kicker:{color:colors.accent,fontSize:10,letterSpacing:2,fontWeight:'900'},h1:{color:colors.text,fontSize:34,fontWeight:'900',letterSpacing:-1.4},add:{backgroundColor:colors.accent,width:45,height:45,borderRadius:23,alignItems:'center',justifyContent:'center'},hero:{height:255,borderRadius:24,overflow:'hidden',padding:22,justifyContent:'flex-end'},overlay:{...StyleSheet.absoluteFill,backgroundColor:'rgba(3,5,6,.54)'},heroSmall:{color:colors.accent,fontSize:11,fontWeight:'900',letterSpacing:1.5},heroTitle:{color:'#fff',fontSize:27,lineHeight:30,fontWeight:'900',marginVertical:10},shuffle:{alignSelf:'flex-start',flexDirection:'row',gap:8,backgroundColor:colors.accent,borderRadius:20,paddingHorizontal:16,paddingVertical:10},section:{color:colors.text,fontSize:21,fontWeight:'900',marginTop:30,marginBottom:10},cards:{flexDirection:'row',gap:14},card:{width:'47%'},cardArt:{width:'100%',aspectRatio:1,borderRadius:14},cardTitle:{color:colors.text,fontWeight:'800',marginTop:9},cardMeta:{color:colors.muted,marginTop:3,fontSize:12}});

@@ -30,8 +30,24 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
-.env*.local
+# Environment files (commit only the documented template)
+.env
+.env.*
+!.env.example
+
+# Logs and local tooling output
+*.log
+coverage/
+.eslintcache
+
+# Local databases and credentials
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.keystore
+GoogleService-Info.plist
+google-services.json
 
 # typescript
 *.tsbuildinfo

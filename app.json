@@ -1,16 +1,22 @@
 {
   "expo": {
-    "name": "SOUNDSTASH",
-    "slug": "SOUNDSTASH",
+    "name": "SoundStash",
+    "slug": "soundstash",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "soundstash",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.soundstash.mobile",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"],
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.soundstash.mobile",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -26,6 +32,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-dev-client",
       [
         "expo-splash-screen",
         {
