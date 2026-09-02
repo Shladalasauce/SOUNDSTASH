@@ -6,7 +6,11 @@ SoundStash is a mobile-first personal audio library for organizing and playing s
 
 Short-form platforms make sounds easy to discover but difficult to organize across services. SoundStash provides one searchable library, playlists, a playback queue, background audio controls, and permitted offline downloads.
 
-This repository is an early, local-first MVP. It includes ten public demo audio streams so the core experience can be evaluated without social-platform or backend credentials. Pasted links are saved as metadata and retain their original URL; the app does not scrape or bypass platform media restrictions.
+This repository is an early, local-first MVP. It includes public-domain remote
+demo recordings so the core experience can be evaluated without social-platform or
+backend credentials. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before
+redistributing demo media. Pasted links are saved as metadata and retain their
+original URL; the app does not scrape or bypass platform media restrictions.
 
 ## Demo
 
@@ -32,7 +36,7 @@ flowchart LR
 - `services/downloads/`: permitted downloads to app-private storage.
 - `services/social/`: capability-aware TikTok, Instagram, and generic URL adapters.
 - `features/`: demo data and pure queue utilities.
-- `supabase/migrations/`: an optional, future-facing schema with row-level security. It is not connected to the app yet.
+- `supabase/migrations/`: an optional, future-facing schema with row-level security. It is not connected to the app yet, and token encryption is not implemented by the current application.
 
 ## How it works
 
@@ -64,12 +68,13 @@ Prerequisites:
 - Xcode for iOS builds or Android Studio for Android builds
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Shladalasauce/SOUNDSTASH.git
 cd soundstash
 npm ci
 ```
 
-The local demo requires no environment variables. Create a local environment file only if working on the planned Supabase integration:
+The local demo requires no environment variables. If working on the planned
+Supabase integration, create a local environment file from the safe template:
 
 ```bash
 cp .env.example .env
@@ -98,7 +103,7 @@ Use `npm run dev:lan` for a physical device on the same network or `npm run dev:
 
 ## Configuration
 
-The variables below are reserved for planned cloud sync and are not read by the current app:
+The variables below are reserved for planned cloud sync and are not read by the current app. `.env.example` contains placeholders only; copy it to `.env` for local configuration and never commit `.env` files.
 
 | Variable | Purpose | Secret? |
 | --- | --- | --- |
@@ -123,7 +128,7 @@ Current tests cover queue progression, repeat and shuffle behavior, URL deduplic
 - A custom entry point registers the Track Player background service before loading Expo Router.
 - Provider capability flags make unavailable platform integrations explicit instead of simulating unsupported API access.
 - Downloads are gated by an availability value and stored privately by the app; metadata-only imports are never treated as downloadable media.
-- The Supabase migration enables owner-scoped row-level-security policies, but backend integration remains deliberately separate from the working local MVP.
+- The Supabase migration enables owner-scoped row-level-security policies, but backend integration and token encryption remain deliberately separate from the working local MVP.
 
 ## Limitations
 
@@ -131,7 +136,7 @@ Current tests cover queue progression, repeat and shuffle behavior, URL deduplic
 - Supabase authentication and synchronization are not connected.
 - There is no native share extension.
 - Native playback and offline behavior still require physical-device acceptance testing.
-- Demo artwork and audio depend on third-party public endpoints and may become unavailable.
+- Demo artwork and audio depend on third-party public endpoints and may become unavailable or require separate usage rights. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - Accessibility, error recovery, observability, and UI-level test coverage are limited.
 - Web is not a supported playback target.
 

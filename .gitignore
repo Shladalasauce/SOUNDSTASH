@@ -35,6 +35,12 @@ yarn-error.*
 .env.*
 !.env.example
 
+# Local agent and editor state
+.claude/
+.codex/
+.idea/
+*.code-workspace
+
 # Logs and local tooling output
 *.log
 coverage/
@@ -51,6 +57,11 @@ google-services.json
 
 # typescript
 *.tsbuildinfo
+
+# Test and tool caches
+.cache/
+.eslintcache
+.parcel-cache/
 
 # generated native folders
 /ios
